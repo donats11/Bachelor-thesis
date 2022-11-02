@@ -1,4 +1,4 @@
-package com.example;
+package loginApp;
 
 import io.quarkus.test.junit.QuarkusIntegrationTest;
 

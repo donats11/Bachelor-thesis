@@ -1,4 +1,4 @@
-package com.example;
+package loginApp;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
