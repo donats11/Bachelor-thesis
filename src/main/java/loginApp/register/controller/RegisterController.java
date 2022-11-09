@@ -10,7 +10,7 @@ import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
-
+@Path("/api")
 public class RegisterController {
     @Inject
     RegisterBO registerBO;
@@ -19,7 +19,7 @@ public class RegisterController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<Notification> registerUser(@BeanParam User user) {
+    public Uni<Notification> registerUser(User user) {
         return registerBO.insert(user);
     }
 
@@ -27,7 +27,7 @@ public class RegisterController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<Notification> login(@BeanParam LoginRequest loginRequest) {
+    public Uni<Notification> login(LoginRequest loginRequest) {
         return registerBO.login(loginRequest);
     }
 }
