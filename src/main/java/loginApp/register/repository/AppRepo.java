@@ -15,7 +15,7 @@ import static loginApp.utils.ApplicationUtils.uniFail;
 import static loginApp.utils.ApplicationUtils.uniItem;
 
 @ApplicationScoped
-public class RegisterRepo {
+public class AppRepo {
 
     public Uni<Notification> insert(User user) throws Exception {
         Connection conn = DriverManager.getConnection("jdbc:mysql://localhost:3306/loginmanager", "root", "root");

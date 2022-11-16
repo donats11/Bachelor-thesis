@@ -1,16 +1,14 @@
 package loginApp.register.business;
 
 import io.smallrye.mutiny.Uni;
-import loginApp.register.entities.LoginRequest;
+import loginApp.register.entities.Request;
 import loginApp.register.entities.User;
-import loginApp.register.repository.RegisterRepo;
+import loginApp.register.repository.AppRepo;
 import loginApp.utils.Notification;
-import org.slf4j.Logger;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import java.util.Objects;
-import java.util.function.Supplier;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,20 +16,20 @@ import static loginApp.utils.ApplicationUtils.*;
 import static loginApp.utils.Authenticate.hashPassword;
 
 @ApplicationScoped
-public class RegisterBO {
+public class AppBO {
     @Inject
-    RegisterRepo registerRepo;
+    AppRepo registerRepo;
 
-    public Uni<Notification> insert(LoginRequest loginRequest) {
-        return checkIfCredentialsAreValid(loginRequest).flatMap(
+    public Uni<Notification> insert(Request request) {
+        return checkIfCredentialsAreValid(request).flatMap(
                 aBoolean -> aBoolean ?
-                        getUserByEmail(loginRequest.username)
+                        getUserByEmail(request.username)
                                 .flatMap(foundUser -> {
                                     if (notBlank(foundUser.email)) {
                                         return uniItem(Notification.NotificationError("User exists in database"));
                                     }
                                     try {
-                                        return registerRepo.insert(User.generateUser(loginRequest.username, loginRequest.password));
+                                        return registerRepo.insert(User.generateUser(request.username, request.password));
                                     } catch (Exception e) {
                                         return uniItem(Notification.NotificationError(e.getMessage()));
                                     }
@@ -42,23 +40,23 @@ public class RegisterBO {
         return registerRepo.getUserByEmail(email);
     }
 
-    public Uni<Notification> login(LoginRequest loginRequest) {
-        if (isBlank(loginRequest.username) || isBlank(loginRequest.password)) {
+    public Uni<Notification> login(Request request) {
+        if (isBlank(request.username) || isBlank(request.password)) {
             return uniItem(Notification.NotificationError("Username/password is/are not given properly"));
         }
-        return getUserByEmail(loginRequest.username)
+        return getUserByEmail(request.username)
                 .flatMap(foundUser -> {
                     if (isBlank(foundUser)) {
                         return uniItem(Notification.NotificationError("Invalid credentials"));
                     }
-                    if (Objects.equals(hashPassword(loginRequest.password, foundUser.salt), foundUser.hashedPassword)) {
+                    if (Objects.equals(hashPassword(request.password, foundUser.salt), foundUser.hashedPassword)) {
                         return uniItem(Notification.NotificationOk("Login succesful"));
                     }
                     return uniItem(Notification.NotificationError("Invalid credentials"));
                 });
     }
 
-    private Uni<Boolean> checkIfCredentialsAreValid(LoginRequest loginRequest) {
+    private Uni<Boolean> checkIfCredentialsAreValid(Request loginRequest) {
         return (isBlank(loginRequest.password) || isBlank(loginRequest.username)) ?
                 uniItem(false) : (checkIfUsernameIsValid(loginRequest.username) && checkIfPasswordIsValid(loginRequest.password)) ?
                 uniItem(true) : uniItem(false);

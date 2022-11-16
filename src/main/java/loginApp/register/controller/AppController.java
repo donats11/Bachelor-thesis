@@ -1,24 +1,24 @@
 package loginApp.register.controller;
 
 import io.smallrye.mutiny.Uni;
-import loginApp.register.entities.LoginRequest;
+import loginApp.register.entities.Request;
 import loginApp.utils.Notification;
-import loginApp.register.business.RegisterBO;
+import loginApp.register.business.AppBO;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 
 @Path("/api")
-public class RegisterController {
+public class AppController {
     @Inject
-    RegisterBO registerBO;
+    AppBO registerBO;
 
     @Path("/register")
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<Notification> registerUser(LoginRequest loginRequest) {
+    public Uni<Notification> registerUser(Request loginRequest) {
         return registerBO.insert(loginRequest);
     }
 
@@ -26,7 +26,7 @@ public class RegisterController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<Notification> login(LoginRequest loginRequest) {
+    public Uni<Notification> login(Request loginRequest) {
         return registerBO.login(loginRequest);
     }
 }
