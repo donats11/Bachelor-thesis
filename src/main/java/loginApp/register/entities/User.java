@@ -1,9 +1,11 @@
 package loginApp.register.entities;
 
-import io.quarkus.runtime.annotations.RegisterForReflection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import static loginApp.utils.Authenticate.generateSalt;
 import static loginApp.utils.Authenticate.hashPassword;
+
 public class User {
     public String email;
     public String hashedPassword;
@@ -18,5 +20,18 @@ public class User {
         user.salt = generateSalt();
         user.hashedPassword = hashPassword(password, user.salt);
         return user;
+    }
+
+    public User() {
+    }
+
+    public User(String email, String hashedPassword, String salt) {
+        this.email = email;
+        this.hashedPassword = hashedPassword;
+        this.salt = salt;
+    }
+
+    public static User from(ResultSet resultSet) throws SQLException {
+        return new User(resultSet.getString(1), resultSet.getString(2), resultSet.getString(3));
     }
 }
