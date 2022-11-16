@@ -4,7 +4,6 @@ import io.smallrye.mutiny.Uni;
 import loginApp.register.entities.LoginRequest;
 import loginApp.utils.Notification;
 import loginApp.register.business.RegisterBO;
-import loginApp.register.entities.User;
 
 import javax.inject.Inject;
 import javax.ws.rs.*;
@@ -19,8 +18,8 @@ public class RegisterController {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<Notification> registerUser(User user) {
-        return registerBO.insert(user);
+    public Uni<Notification> registerUser(LoginRequest loginRequest) {
+        return registerBO.insert(loginRequest);
     }
 
     @Path("/login")

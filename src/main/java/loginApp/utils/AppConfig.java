@@ -9,7 +9,7 @@ public class AppConfig {
     private AppConfig() {
         try {
             props = new Properties();
-            props.load(getClass().getResourceAsStream("../resources/db.properties"));
+            props.load(getClass().getResourceAsStream("db.properties"));
         } catch (Exception ex) {
             ex.printStackTrace();
         }
