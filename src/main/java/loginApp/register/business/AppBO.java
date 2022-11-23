@@ -4,6 +4,7 @@ import io.smallrye.mutiny.Uni;
 import loginApp.register.entities.Request;
 import loginApp.register.entities.User;
 import loginApp.register.repository.AppRepo;
+import loginApp.utils.BaseException;
 import loginApp.utils.Notification;
 
 import javax.enterprise.context.ApplicationScoped;
@@ -30,14 +31,18 @@ public class AppBO {
                                     }
                                     try {
                                         return registerRepo.insert(User.generateUser(request.username, request.password));
-                                    } catch (Exception e) {
+                                    } catch (BaseException e) {
                                         return uniItem(Notification.NotificationError(e.getMessage()));
                                     }
                                 }) : uniItem(Notification.NotificationError("Username/password is/are not given properly")));
     }
 
     public Uni<User> getUserByEmail(String email) {
-        return registerRepo.getUserByEmail(email);
+        try {
+            return registerRepo.getUserByEmail(email);
+        } catch (Exception | BaseException e) {
+            return uniFail(new BaseException("Failed to get user by email", 500));
+        }
     }
 
     public Uni<Notification> login(Request request) {
