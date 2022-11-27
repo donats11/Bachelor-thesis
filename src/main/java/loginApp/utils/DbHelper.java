@@ -12,9 +12,25 @@ public class DbHelper {
 
     public static Connection getConnection() throws BaseException {
         try {
-            return DriverManager.getConnection(DATABASE_URL, DATABASE_USERNAME, DATABASE_PASWORD);
+            return DriverManager.getConnection(getDatabaseUrl(), getDatabaseName(), getDatabasePassword());
         } catch (SQLException sqlException) {
             throw new BaseException("Failed to connect to database", 500);
         }
+    }
+
+    private static String getDatabaseUrl() {
+        return getEnv(DATABASE_URL);
+    }
+
+    private static String getDatabaseName() {
+        return getEnv(DATABASE_USERNAME);
+    }
+
+    private static String getDatabasePassword() {
+        return getEnv(DATABASE_PASWORD);
+    }
+
+    private static String getEnv(String envVariable) {
+        return System.getenv(envVariable);
     }
 }
