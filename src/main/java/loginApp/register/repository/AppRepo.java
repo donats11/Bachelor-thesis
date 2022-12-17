@@ -7,7 +7,9 @@ import loginApp.utils.DbHelper;
 import loginApp.utils.Notification;
 
 import javax.enterprise.context.ApplicationScoped;
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import static loginApp.utils.ApplicationUtils.uniFail;
 import static loginApp.utils.ApplicationUtils.uniItem;
