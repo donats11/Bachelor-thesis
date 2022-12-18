@@ -2,6 +2,7 @@ package loginApp.pakkeyManager.repo;
 
 import io.smallrye.mutiny.Uni;
 import loginApp.pakkeyManager.entities.Passkey;
+import loginApp.pakkeyManager.entities.PasskeyRequest;
 import loginApp.utils.BaseException;
 import loginApp.utils.DbHelper;
 import loginApp.utils.Notification;
@@ -34,7 +35,7 @@ public class PasskeyRepo {
         });
     }
 
-    public Uni<Notification> insertOne(Passkey passkey) {
+    public Uni<Notification> insertOne(PasskeyRequest passkey) {
         return Uni.createFrom().emitter(uniEmitter -> {
             try {
                 Connection conn = DbHelper.getConnection();
