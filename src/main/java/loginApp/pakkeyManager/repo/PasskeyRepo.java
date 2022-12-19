@@ -2,6 +2,7 @@ package loginApp.pakkeyManager.repo;
 
 import io.smallrye.mutiny.Uni;
 import loginApp.pakkeyManager.entities.Passkey;
+import loginApp.pakkeyManager.entities.PasskeyDataWrapper;
 import loginApp.pakkeyManager.entities.PasskeyRequest;
 import loginApp.utils.BaseException;
 import loginApp.utils.DbHelper;
@@ -17,7 +18,7 @@ import java.util.stream.Collectors;
 
 @ApplicationScoped
 public class PasskeyRepo {
-    public Uni<List<String>> getPasskeyNames() {
+    public Uni<PasskeyDataWrapper> getPasskeyNames() {
         return Uni.createFrom().emitter(uniEmitter -> {
             try {
                 List<Passkey> passkeys = new ArrayList<>();
@@ -28,7 +29,7 @@ public class PasskeyRepo {
                 while (resultSet.next()) {
                     passkeys.add(Passkey.from(resultSet));
                 }
-                uniEmitter.complete(passkeys.stream().map(passkey -> passkey.passkeyName).collect(Collectors.toList()));
+                uniEmitter.complete(new PasskeyDataWrapper(passkeys.stream().map(passkey -> passkey.passkeyName).collect(Collectors.toList())));
             } catch (Exception | BaseException e) {
                 uniEmitter.fail(new BaseException("Failed to process get user by email due to server error encounter", 500));
             }

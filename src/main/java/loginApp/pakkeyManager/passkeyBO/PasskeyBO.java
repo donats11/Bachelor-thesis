@@ -2,6 +2,7 @@ package loginApp.pakkeyManager.passkeyBO;
 
 import io.smallrye.mutiny.Uni;
 import loginApp.pakkeyManager.entities.Passkey;
+import loginApp.pakkeyManager.entities.PasskeyDataWrapper;
 import loginApp.pakkeyManager.entities.PasskeyRequest;
 import loginApp.pakkeyManager.repo.PasskeyRepo;
 import loginApp.utils.Notification;
@@ -15,7 +16,7 @@ public class PasskeyBO {
     @Inject
     PasskeyRepo passkeyRepo;
 
-    public Uni<List<String>> getPasskeyNames() {
+    public Uni<PasskeyDataWrapper> getPasskeyNames() {
         return passkeyRepo.getPasskeyNames();
     }
 

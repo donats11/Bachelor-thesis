@@ -2,6 +2,7 @@ package loginApp.pakkeyManager.controller;
 
 import io.smallrye.mutiny.Uni;
 import loginApp.pakkeyManager.entities.Passkey;
+import loginApp.pakkeyManager.entities.PasskeyDataWrapper;
 import loginApp.pakkeyManager.entities.PasskeyRequest;
 import loginApp.pakkeyManager.passkeyBO.PasskeyBO;
 import loginApp.utils.Notification;
@@ -19,7 +20,7 @@ public class PasskeyController {
     @GET
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Uni<List<String>> getPasskeyNames() {
+    public Uni<PasskeyDataWrapper> getPasskeyNames() {
         return passkeyBO.getPasskeyNames();
     }
 
